@@ -1,4 +1,5 @@
 const { Builder, By, Key, until } = require('selenium-webdriver');
+const nodemailer = require('nodemailer');
 
 async function main() {
   // 웹 드라이버 생성 (Chrome 브라우저를 사용)
@@ -17,10 +18,32 @@ async function main() {
 
 	await driver.sleep(100);
     await driver.get('https://katalkenglish.com/mypage#');
-	await driver.sleep(1000);
+	const targetElement = await driver.findElement(By.css('.text'));
+    if(await targetElement.isDisplayed()) {
+        //요소가 존재하면 메일 보내기
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: 'gasiorowicz10@gmail.com',    //발신자 gmail계정
+                pass: 'roselily1!'  // 발신자 gmail 계정 비밀번호
+            }
+        });
 
-    console.log("끝");
+        const mailOptions = {
+            from: 'gaisorowicz10@gmail.com',
+            to: 'werghjkl333@naver.com',
+            subject: '강의가 있습니다',
+            text: targetElement
+        };
 
+        transporter.sendMail(mailOptions, (error, info) => {
+            if(error) {
+                console.log('메일 보내기 오류: ', error);
+            } else {
+                console.log('메일이 성공적으로 보내졌습니다.', info.response);
+            }
+        });
+    }
 
   } catch (error) {
     console.error('Error:', error);
