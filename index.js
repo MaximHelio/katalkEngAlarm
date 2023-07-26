@@ -14,12 +14,14 @@ async function main() {
 	await driver.sleep(1000);
     await driver.findElement(By.css('#mat-input-1')).sendKeys('duruaal@123', Key.ENTER);
     // 엔터
-    await driver.findElement(By.css('data-button')).click;
+    // await driver.findElement(By.css('.ng-star-inserted')).click;
+    await driver.findElement(By.tagName("button"));
 
-	await driver.sleep(100);
-    await driver.get('https://katalkenglish.com/mypage#');
-	const targetElement = await driver.findElement(By.css('.text'));
+	await driver.sleep(5000);
+	const targetElement = await driver.findElement(By.css('#class-time'));
+    console.log(targetElement);
     if(await targetElement.isDisplayed()) {
+        console.log('여기?')
         //요소가 존재하면 메일 보내기
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
